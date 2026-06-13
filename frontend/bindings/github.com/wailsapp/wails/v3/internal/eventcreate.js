@@ -6,9 +6,19 @@
 // @ts-ignore: Unused imports
 import { Create as $Create } from "@wailsio/runtime";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: Unused imports
+import * as service$0 from "../../../../../project_service/internal/service/models.js";
+
 function configure() {
     Object.freeze(Object.assign($Create.Events, {
+        "serial:data": $$createType0,
+        "serial:status": $$createType1,
     }));
 }
+
+// Private type creation functions
+const $$createType0 = $Create.Map($Create.Any, $Create.Any);
+const $$createType1 = service$0.SerialStatus.createFrom;
 
 configure();

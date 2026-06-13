@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import App from './App.vue'
 import router from './router'  // 你稍后需要创建 router 实例
-import '../public/style.css'  // 引入 Tailwind CSS
+import '@/style.css'  // 引入 Tailwind CSS
 
 // 创建应用
 const app = createApp(App)

@@ -5,9 +5,15 @@
 // @ts-ignore: Unused imports
 import type { Events } from "@wailsio/runtime";
 
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore: Unused imports
+import type * as service$0 from "../../../../../project_service/internal/service/models.js";
+
 declare module "@wailsio/runtime" {
     namespace Events {
         interface CustomEvents {
+            "serial:data": { [_ in string]?: any };
+            "serial:status": service$0.SerialStatus;
             "time": string;
         }
     }

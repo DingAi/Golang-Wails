@@ -2,9 +2,10 @@ package main
 
 import (
 	"embed"
-
 	"log"
 	"time"
+
+	"project_service/internal/service"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
 )
@@ -38,7 +39,8 @@ func main() {
 		Name:        "dingvi-go-wails",
 		Description: "A demo of using raw HTML & CSS",
 		Services: []application.Service{
-			application.NewService(&GreetService{}),
+			application.NewService(&service.GreetService{}),
+			application.NewService(service.NewSerialService()),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
@@ -54,13 +56,15 @@ func main() {
 	// 'BackgroundColour' is the background colour of the window.
 	// 'URL' is the URL that will be loaded into the webview.
 	app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title: "Window 1",
+		Title:  "DingVi's Tools",
+		Width:  1180,
+		Height: 920,
 		Mac: application.MacWindow{
 			InvisibleTitleBarHeight: 50,
 			Backdrop:                application.MacBackdropTranslucent,
 			TitleBar:                application.MacTitleBarHiddenInset,
 		},
-		BackgroundColour: application.NewRGB(27, 38, 54),
+		BackgroundColour: application.NewRGB(62, 61, 50),
 		URL:              "/",
 	})
 

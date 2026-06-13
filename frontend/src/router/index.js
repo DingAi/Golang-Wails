@@ -1,25 +1,33 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import BlankLayout from '../layouts/BlankLayout.vue'
-import DefaultLayout from '../layouts/DefaultLayout.vue'
+import Dashboard from '../layouts/Dashboard.vue'
 import Login from '../views/Login.vue'
-// import Dashboard from '../views/Dashboard.vue'
-// import SerialPort from '../views/SerialPort.vue'  // 串口助手页面，稍后实现
+import SerialPort from '../views/SerialPort.vue'
+import Receiver from '../views/Receiver.vue'
+import FrameVisualRule from '../views/FrameVisualRule.vue'
 
 const routes = [
   {
+    path: '/',
+    redirect: (to) => {
+      const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
+      return isLoggedIn ? '/dashboard' : '/login'
+    }
+  },
+  // ✅ 添加 login 路由
+  {
     path: '/login',
     component: BlankLayout,
-    children: [
-      { path: '', component: Login }
-    ]
+    children: [{ path: '', component: Login }]
   },
   {
-    path: '/',
-    component: DefaultLayout,
+    path: '/dashboard',
+    component: Dashboard,
+    redirect: '/dashboard/serial',
     children: [
-    //   { path: 'dashboard', component: Dashboard },
-    //   { path: 'serial', component: SerialPort },
-    //   { path: '', redirect: '/dashboard' }
+      { path: 'serial', component: SerialPort },
+      { path: 'receiver', component: Receiver },
+      { path: 'frame-visual-rule', component: FrameVisualRule }
     ]
   }
 ]
@@ -29,7 +37,6 @@ const router = createRouter({
   routes
 })
 
-// 全局路由守卫：未登录时跳转登录页
 router.beforeEach((to, from, next) => {
   const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true'
   if (to.path !== '/login' && !isLoggedIn) {
