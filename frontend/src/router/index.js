@@ -3,8 +3,10 @@ import BlankLayout from '../layouts/BlankLayout.vue'
 import Dashboard from '../layouts/Dashboard.vue'
 import Login from '../views/Login.vue'
 import SerialPort from '../views/SerialPort.vue'
-import Receiver from '../views/Receiver.vue'
-import FrameVisualRule from '../views/FrameVisualRule.vue'
+import ModbusParser from '../views/FrameParser/ModbusParser.vue'
+import IEC104Parser from '../views/FrameParser/IEC104Parser.vue'
+import DLT698Parser from '../views/FrameParser/DLT698Parser.vue'
+import DLT645Parser from '../views/FrameParser/DLT645Parser.vue'
 
 const routes = [
   {
@@ -26,8 +28,10 @@ const routes = [
     redirect: '/dashboard/serial',
     children: [
       { path: 'serial', component: SerialPort },
-      { path: 'receiver', component: Receiver },
-      { path: 'frame-visual-rule', component: FrameVisualRule }
+      { path: 'modbus-parser', component: ModbusParser },
+      { path: 'iec104-parser', component: IEC104Parser },
+      { path: 'dlt698-parser', component: DLT698Parser },
+      { path: 'dlt645-parser', component: DLT645Parser }
     ]
   }
 ]
