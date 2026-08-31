@@ -2,5 +2,10 @@
 bin
 frontend/dist
 frontend/node_modules
-build/linux/appimage/build
-build/windows/nsis/MicrosoftEdgeWebview2Setup.exe
+
+# 忽略 build 文件夹下的一切
+/build/*
+
+# 但保留必需的源文件：项目配置 和 原始图标
+!/build/config.yml
+!/build/appicon.png
