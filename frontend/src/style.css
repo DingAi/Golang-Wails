@@ -130,3 +130,19 @@ button {
     background-color: #0f172a;
   }
 }
+
+@theme {
+  /* 在这里定义你的 Monokai 配色 */
+  --color-monokai-bg: #272822;
+  --color-monokai-surface: #3E3D32;
+  --color-monokai-foreground: #F8F8F2;
+  --color-monokai-comment: #75715E;
+  --color-monokai-green: #A6E22E;
+  --color-monokai-yellow: #E6DB74;
+  --color-monokai-cyan: #66D9EF;
+  --color-monokai-pink: #F92672;
+  --color-monokai-pinkHover: #dd1e63;
+  --color-monokai-input: #32332E;       /* 输入框/按钮背景 */
+  --color-monokai-inputHover: #4e4d40;  /* 按钮悬停（暗色） */
+  --color-monokai-greenHover: #93c725;  /* 绿色按钮悬停 */
+}

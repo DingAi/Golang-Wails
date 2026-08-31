@@ -1,35 +1,36 @@
 <template>
-    <div class="flex flex-col bg-[#272822] w-full h-full overflow-hidden text-[#F8F8F2]">
+    <div class="flex flex-col bg-monokai-bg w-full h-full overflow-hidden text-monokai-foreground">
         <!-- 顶部标题栏 -->
-        <header class="flex justify-between items-center bg-[#3E3D32] px-4 py-3 border-[#75715E] border-b shrink-0">
-            <h2 class="font-medium text-[#66D9EF] text-lg">DL/T 698.45 协议解析工具</h2>
+        <header
+            class="flex justify-between items-center bg-monokai-surface px-4 py-3 border-monokai-comment border-b shrink-0">
+            <h2 class="font-medium text-monokai-cyan text-lg">DL/T 698.45 协议解析工具</h2>
             <div class="flex gap-3">
                 <button @click="fillExample"
-                    class="bg-[#32332E] hover:bg-[#4e4d40] px-3 py-1.5 border border-[#75715E] rounded-lg text-[#E6DB74] text-sm transition">
+                    class="bg-monokai-input hover:bg-monokai-inputHover px-3 py-1.5 border border-monokai-comment rounded-lg text-monokai-yellow text-sm transition">
                     示例报文
                 </button>
                 <button @click="parseFrame"
-                    class="bg-[#A6E22E] hover:bg-[#93c725] px-3 py-1.5 rounded-lg text-[#272822] text-sm transition">
+                    class="bg-monokai-green hover:bg-monokai-greenHover px-3 py-1.5 rounded-lg text-monokai-bg text-sm transition">
                     立即解析
                 </button>
                 <button @click="clearAll"
-                    class="bg-[#32332E] hover:bg-[#4e4d40] px-3 py-1.5 border border-[#75715E] rounded-lg text-[#E6DB74] text-sm transition">
+                    class="bg-monokai-input hover:bg-monokai-inputHover px-3 py-1.5 border border-monokai-comment rounded-lg text-monokai-yellow text-sm transition">
                     清空
                 </button>
             </div>
         </header>
 
         <!-- 输入区 + 字节预览 -->
-        <div class="p-4 border-[#75715E] border-b shrink-0">
-            <div class="mb-2 text-[#75715E] text-sm">原始报文（十六进制，支持空格分隔）：</div>
+        <div class="p-4 border-monokai-comment border-b shrink-0">
+            <div class="mb-2 text-monokai-comment text-sm">原始报文（十六进制，支持空格分隔）：</div>
             <textarea v-model="rawHex" @input="onInputChange"
-                class="bg-[#32332E] p-3 border border-[#75715E] focus:border-[#66D9EF] rounded-xl focus:outline-none w-full font-mono text-[#E6DB74] text-sm resize-none"
+                class="bg-monokai-input p-3 border border-monokai-comment focus:border-monokai-cyan rounded-xl focus:outline-none w-full font-mono text-monokai-yellow text-sm resize-none"
                 rows="2"
                 placeholder="例如：68 1F 1F 68 08 02 02 01 01 00 01 C1 01 80 01 00 00 00 01 00 00 00 01 00 00 00 00 6A 35 16"></textarea>
 
             <!-- 字节预览区（按帧结构分区） -->
             <div v-if="frameBytes.length"
-                class="flex flex-wrap gap-1.5 bg-[#32332E] mt-3 p-3 border border-[#75715E] rounded-xl">
+                class="flex flex-wrap gap-1.5 bg-monokai-input mt-3 p-3 border border-monokai-comment rounded-xl">
                 <span v-for="(byte, idx) in frameBytes" :key="idx"
                     class="flex justify-center items-center border border-[#444] rounded w-10 h-8 font-mono text-sm"
                     :style="getByteBgStyle(idx)">
@@ -39,14 +40,14 @@
 
             <!-- 图例 -->
             <div class="flex flex-wrap gap-x-4 gap-y-2 mt-3 text-sm">
-                <span class="text-[#75715E]">区块图例：</span>
-                <div class="flex items-center gap-1"><span class="border border-[#75715E] rounded w-4 h-4"
+                <span class="text-monokai-comment">区块图例：</span>
+                <div class="flex items-center gap-1"><span class="border border-monokai-comment rounded w-4 h-4"
                         style="background-color: #3b82f6;"></span><span>链路头部</span></div>
-                <div class="flex items-center gap-1"><span class="border border-[#75715E] rounded w-4 h-4"
+                <div class="flex items-center gap-1"><span class="border border-monokai-comment rounded w-4 h-4"
                         style="background-color: #ef4444;"></span><span>地址域</span></div>
-                <div class="flex items-center gap-1"><span class="border border-[#75715E] rounded w-4 h-4"
+                <div class="flex items-center gap-1"><span class="border border-monokai-comment rounded w-4 h-4"
                         style="background-color: #10b981;"></span><span>APDU (应用层)</span></div>
-                <div class="flex items-center gap-1"><span class="border border-[#75715E] rounded w-4 h-4"
+                <div class="flex items-center gap-1"><span class="border border-monokai-comment rounded w-4 h-4"
                         style="background-color: #fbbf24;"></span><span>校验域</span></div>
             </div>
         </div>
@@ -54,63 +55,67 @@
         <!-- 解析结果区域（使用卡片+树形结构） -->
         <div class="flex-1 p-4 overflow-y-auto custom-scrollbar">
             <!-- 解析状态提示 -->
-            <div v-if="isParsing" class="mb-2 text-[#E6DB74] text-sm">解析中...</div>
+            <div v-if="isParsing" class="mb-2 text-monokai-yellow text-sm">解析中...</div>
 
             <!-- 链路层卡片 -->
-            <div v-if="parsed.link" class="bg-[#3E3D32] mb-4 p-4 border border-[#75715E]/40 rounded-xl">
+            <div v-if="parsed.link" class="bg-monokai-surface mb-4 p-4 border border-monokai-comment/40 rounded-xl">
                 <div class="flex items-center gap-2 mb-3">
                     <div class="bg-[#3b82f6] rounded-full w-2 h-5"></div>
-                    <h3 class="font-semibold text-[#66D9EF]">链路层信息</h3>
+                    <h3 class="font-semibold text-monokai-cyan">链路层信息</h3>
                 </div>
                 <div class="gap-3 grid grid-cols-2 md:grid-cols-3 text-sm">
-                    <div><span class="text-[#75715E]">起始符：</span>{{ parsed.link.start }}</div>
-                    <div><span class="text-[#75715E]">长度：</span>{{ parsed.link.length }} 字节</div>
-                    <div><span class="text-[#75715E]">控制域：</span>{{ parsed.link.control }}</div>
-                    <div><span class="text-[#75715E]">地址域：</span>{{ parsed.link.address }}</div>
-                    <div><span class="text-[#75715E]">帧头校验(HCS)：</span>{{ parsed.link.hcs }} <span
+                    <div><span class="text-monokai-comment">起始符：</span>{{ parsed.link.start }}</div>
+                    <div><span class="text-monokai-comment">长度：</span>{{ parsed.link.length }} 字节</div>
+                    <div><span class="text-monokai-comment">控制域：</span>{{ parsed.link.control }}</div>
+                    <div><span class="text-monokai-comment">地址域：</span>{{ parsed.link.address }}</div>
+                    <div><span class="text-monokai-comment">帧头校验(HCS)：</span>{{ parsed.link.hcs }} <span
                             v-if="parsed.link.hcsValid !== undefined"
-                            :class="parsed.link.hcsValid ? 'text-[#A6E22E]' : 'text-[#F92672]'">({{ parsed.link.hcsValid
+                            :class="parsed.link.hcsValid ? 'text-monokai-green' : 'text-monokai-pink'">({{
+                                parsed.link.hcsValid
                             ? '通过' : '失败' }})</span></div>
-                    <div><span class="text-[#75715E]">整帧校验(FCS)：</span>{{ parsed.link.fcs }} <span
+                    <div><span class="text-monokai-comment">整帧校验(FCS)：</span>{{ parsed.link.fcs }} <span
                             v-if="parsed.link.fcsValid !== undefined"
-                            :class="parsed.link.fcsValid ? 'text-[#A6E22E]' : 'text-[#F92672]'">({{ parsed.link.fcsValid
+                            :class="parsed.link.fcsValid ? 'text-monokai-green' : 'text-monokai-pink'">({{
+                                parsed.link.fcsValid
                             ? '通过' : '失败' }})</span></div>
-                    <div><span class="text-[#75715E]">结束符：</span>{{ parsed.link.end }}</div>
+                    <div><span class="text-monokai-comment">结束符：</span>{{ parsed.link.end }}</div>
                 </div>
             </div>
 
             <!-- 应用层卡片（APDU） -->
-            <div v-if="parsed.apdu" class="bg-[#3E3D32] mb-4 p-4 border border-[#75715E]/40 rounded-xl">
+            <div v-if="parsed.apdu" class="bg-monokai-surface mb-4 p-4 border border-monokai-comment/40 rounded-xl">
                 <div class="flex items-center gap-2 mb-3">
                     <div class="bg-[#10b981] rounded-full w-2 h-5"></div>
-                    <h3 class="font-semibold text-[#A6E22E]">应用层 (APDU)</h3>
+                    <h3 class="font-semibold text-monokai-green">应用层 (APDU)</h3>
                 </div>
                 <div class="text-sm">
                     <!-- APDU 类型 -->
-                    <div class="mb-2"><span class="text-[#75715E]">APDU类型：</span>{{ parsed.apdu.typeName }} ({{
+                    <div class="mb-2"><span class="text-monokai-comment">APDU类型：</span>{{ parsed.apdu.typeName }} ({{
                         parsed.apdu.typeId }})</div>
                     <!-- 如果是请求/响应，显示 OAD 或数据集 -->
                     <div v-if="parsed.apdu.oads && parsed.apdu.oads.length" class="mt-3">
-                        <div class="mb-1 text-[#75715E]">请求对象列表 (OAD)：</div>
+                        <div class="mb-1 text-monokai-comment">请求对象列表 (OAD)：</div>
                         <div class="space-y-2 ml-2">
                             <div v-for="(oad, idx) in parsed.apdu.oads" :key="idx"
-                                class="bg-[#272822] p-2 border border-[#75715E]/30 rounded">
-                                <div><span class="text-[#75715E]">接口类(IC)：</span>{{ oad.ic }} ({{ oad.icName }})</div>
-                                <div><span class="text-[#75715E]">对象标识(OI)：</span>{{ oad.oi }}</div>
-                                <div><span class="text-[#75715E]">属性标识(PI)：</span>{{ oad.pi }} ({{ oad.piName }})</div>
-                                <div v-if="oad.value"><span class="text-[#75715E]">值：</span>{{ oad.value }}</div>
+                                class="bg-monokai-bg p-2 border border-monokai-comment/30 rounded">
+                                <div><span class="text-monokai-comment">接口类(IC)：</span>{{ oad.ic }} ({{ oad.icName }})
+                                </div>
+                                <div><span class="text-monokai-comment">对象标识(OI)：</span>{{ oad.oi }}</div>
+                                <div><span class="text-monokai-comment">属性标识(PI)：</span>{{ oad.pi }} ({{ oad.piName }})
+                                </div>
+                                <div v-if="oad.value"><span class="text-monokai-comment">值：</span>{{ oad.value }}</div>
                             </div>
                         </div>
                     </div>
                     <!-- 数据集响应 -->
                     <div v-if="parsed.apdu.dataSet && parsed.apdu.dataSet.length" class="mt-3">
-                        <div class="mb-1 text-[#75715E]">响应数据：</div>
+                        <div class="mb-1 text-monokai-comment">响应数据：</div>
                         <div class="space-y-2 ml-2">
                             <div v-for="(item, idx) in parsed.apdu.dataSet" :key="idx"
-                                class="bg-[#272822] p-2 border border-[#75715E]/30 rounded">
-                                <div><span class="text-[#75715E]">对象标识：</span>{{ item.oi }}</div>
-                                <div><span class="text-[#75715E]">属性标识：</span>{{ item.pi }}</div>
-                                <div><span class="text-[#75715E]">值：</span>{{ item.value }}</div>
+                                class="bg-monokai-bg p-2 border border-monokai-comment/30 rounded">
+                                <div><span class="text-monokai-comment">对象标识：</span>{{ item.oi }}</div>
+                                <div><span class="text-monokai-comment">属性标识：</span>{{ item.pi }}</div>
+                                <div><span class="text-monokai-comment">值：</span>{{ item.value }}</div>
                             </div>
                         </div>
                     </div>
@@ -118,16 +123,18 @@
             </div>
 
             <!-- 错误提示 -->
-            <div v-if="errorMsg" class="bg-[#F92672]/20 p-3 border border-[#F92672] rounded-xl text-[#F92672] text-sm">
+            <div v-if="errorMsg"
+                class="bg-monokai-pink/20 p-3 border border-monokai-pink rounded-xl text-monokai-pink text-sm">
                 ⚠️ 解析错误：{{ errorMsg }}
             </div>
 
             <!-- 提示信息：推荐使用后端解析 -->
-            <div v-if="!errorMsg && !parsed.link && !parsed.apdu && rawHex" class="py-10 text-[#75715E] text-center">
+            <div v-if="!errorMsg && !parsed.link && !parsed.apdu && rawHex"
+                class="py-10 text-monokai-comment text-center">
                 报文格式不正确或暂不支持自动解析。<br>
                 建议通过后端 Go 服务进行完整解析。
             </div>
-            <div v-if="!rawHex" class="py-10 text-[#75715E] text-center">
+            <div v-if="!rawHex" class="py-10 text-monokai-comment text-center">
                 请输入 DL/T 698.45 报文进行解析
             </div>
         </div>

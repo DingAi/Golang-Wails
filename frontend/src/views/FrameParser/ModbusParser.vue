@@ -1,34 +1,34 @@
 <template>
-  <div class="flex flex-col bg-[#272822] w-full h-full overflow-hidden text-[#F8F8F2]">
-    <header class="flex justify-between items-center bg-[#3E3D32] px-4 py-3 border-[#75715E] border-b shrink-0">
-      <h2 class="font-medium text-[#66D9EF] text-lg">Modbus规则设计</h2>
+  <div class="flex flex-col bg-monokai-bg w-full h-full overflow-hidden text-monokai-foreground">
+    <header class="flex justify-between items-center bg-monokai-surface px-4 py-3 border-monokai-comment border-b shrink-0">
+      <h2 class="font-medium text-monokai-cyan text-lg">Modbus规则设计</h2>
       <div class="flex gap-3">
         <button @click="addField"
-          class="bg-[#A6E22E] hover:bg-[#93c725] px-3 py-1.5 rounded-lg text-[#272822] text-sm transition">+
+          class="bg-monokai-green hover:bg-monokai-greenHover px-3 py-1.5 rounded-lg text-monokai-bg text-sm transition">+
           添加字段分区</button>
         <button @click="toggleLayout"
-          class="bg-[#32332E] hover:bg-[#4e4d40] px-3 py-1.5 border border-[#75715E] rounded-lg text-[#E6DB74] text-sm transition">{{
+          class="bg-monokai-input hover:bg-monokai-inputHover px-3 py-1.5 border border-monokai-comment rounded-lg text-monokai-yellow text-sm transition">{{
             layoutMode === 'horizontal' ? '切换为竖向' : '切换为横向' }}</button>
         <button @click="clearAll"
-          class="bg-[#32332E] hover:bg-[#4e4d40] px-3 py-1.5 border border-[#75715E] rounded-lg text-[#E6DB74] text-sm transition">清空所有分区</button>
+          class="bg-monokai-input hover:bg-monokai-inputHover px-3 py-1.5 border border-monokai-comment rounded-lg text-monokai-yellow text-sm transition">清空所有分区</button>
       </div>
     </header>
 
     <!-- 数据帧输入区 -->
-    <div class="p-4 border-[#75715E] border-b shrink-0">
-      <div class="mb-2 text-[#75715E] text-sm">数据帧（十六进制，支持空格分隔）：</div>
+    <div class="p-4 border-monokai-comment border-b shrink-0">
+      <div class="mb-2 text-monokai-comment text-sm">数据帧（十六进制，支持空格分隔）：</div>
       <textarea v-model="frameInput" @input="parseFrame"
-        class="bg-[#32332E] p-3 border border-[#75715E] focus:border-[#66D9EF] rounded-xl focus:outline-none w-full font-mono text-[#E6DB74] text-sm resize-none"
+        class="bg-monokai-input p-3 border border-monokai-comment focus:border-monokai-cyan rounded-xl focus:outline-none w-full font-mono text-monokai-yellow text-sm resize-none"
         rows="2" placeholder="例如：01 03 00 00 00 01 94 0B"></textarea>
-      <div class="flex flex-wrap gap-1.5 bg-[#32332E] mt-3 p-3 border border-[#75715E] rounded-xl">
+      <div class="flex flex-wrap gap-1.5 bg-monokai-input mt-3 p-3 border border-monokai-comment rounded-xl">
         <span v-for="(byte, idx) in frameBytes" :key="idx"
           class="flex justify-center items-center border border-[#444] rounded w-10 h-8 font-mono text-sm"
           :style="getByteBgStyle(idx)">{{ byte }}</span>
       </div>
       <div class="flex flex-wrap gap-x-4 gap-y-2 mt-3 text-sm">
-        <span class="text-[#75715E]">分区图例：</span>
+        <span class="text-monokai-comment">分区图例：</span>
         <template v-for="(field, idx) in fieldList" :key="idx">
-          <div class="flex items-center gap-1"><span class="border border-[#75715E] rounded w-4 h-4"
+          <div class="flex items-center gap-1"><span class="border border-monokai-comment rounded w-4 h-4"
               :style="{ backgroundColor: field.color }"></span><span>{{ field.name || `未命名分区${idx + 1}` }}</span></div>
         </template>
       </div>
@@ -38,44 +38,44 @@
     <div v-if="layoutMode === 'horizontal'" class="flex-1 p-4 overflow-x-auto overflow-y-hidden custom-scrollbar">
       <div class="flex flex-row items-stretch gap-3" style="min-width: min-content;">
         <div v-for="(field, idx) in fieldList" :key="idx"
-          class="flex-shrink-0 bg-[#3E3D32] p-3 border border-[#75715E]/40 rounded-xl" style="width: 360px;">
+          class="flex-shrink-0 bg-monokai-surface p-3 border border-monokai-comment/40 rounded-xl" style="width: 360px;">
           <!-- 卡片内容 -->
           <div>
             <div class="flex justify-between items-center mb-3">
-              <span class="font-medium text-[#66D9EF] text-sm">分区 #{{ idx + 1 }}</span>
+              <span class="font-medium text-monokai-cyan text-sm">分区 #{{ idx + 1 }}</span>
               <div class="flex gap-2">
                 <button @click="moveUp(idx)" :disabled="idx === 0"
-                  class="flex justify-center items-center bg-[#32332E] hover:bg-[#4e4d40] disabled:opacity-40 rounded w-6 h-6 text-xs">↑</button>
+                  class="flex justify-center items-center bg-monokai-input hover:bg-monokai-inputHover disabled:opacity-40 rounded w-6 h-6 text-xs">↑</button>
                 <button @click="moveDown(idx)" :disabled="idx === fieldList.length - 1"
-                  class="flex justify-center items-center bg-[#32332E] hover:bg-[#4e4d40] disabled:opacity-40 rounded w-6 h-6 text-xs">↓</button>
+                  class="flex justify-center items-center bg-monokai-input hover:bg-monokai-inputHover disabled:opacity-40 rounded w-6 h-6 text-xs">↓</button>
                 <button @click="delField(idx)"
-                  class="flex justify-center items-center bg-[#F92672]/20 hover:bg-[#F92672]/40 rounded w-6 h-6 text-[#F92672] text-xs">×</button>
+                  class="flex justify-center items-center bg-monokai-pink/20 hover:bg-monokai-pink/40 rounded w-6 h-6 text-monokai-pink text-xs">×</button>
               </div>
             </div>
             <div class="flex items-center gap-3 mb-3">
-              <label class="w-20 text-[#75715E] text-sm">分区名称</label>
+              <label class="w-20 text-monokai-comment text-sm">分区名称</label>
               <input v-model="field.name" placeholder="例：设备地址、功能码、数据、CRC校验"
-                class="flex-1 bg-[#32332E] px-3 py-1.5 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none text-sm" />
-              <label class="text-[#75715E] text-sm">标记色</label>
+                class="flex-1 bg-monokai-input px-3 py-1.5 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none text-sm" />
+              <label class="text-monokai-comment text-sm">标记色</label>
               <input v-model="field.color" type="color"
                 class="bg-transparent p-0 border-0 rounded w-8 h-8 cursor-pointer" />
             </div>
             <div class="flex items-center gap-3 mb-3">
-              <label class="w-20 text-[#75715E] text-sm">起始偏移(字节)</label>
+              <label class="w-20 text-monokai-comment text-sm">起始偏移(字节)</label>
               <input v-model.number="field.start" type="number" min="0"
-                class="bg-[#32332E] px-3 py-1.5 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none w-24 text-sm" />
-              <label class="text-[#75715E] text-sm">截取长度(字节)</label>
+                class="bg-monokai-input px-3 py-1.5 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none w-24 text-sm" />
+              <label class="text-monokai-comment text-sm">截取长度(字节)</label>
               <input v-model.number="field.len" type="number" min="1"
-                class="bg-[#32332E] px-3 py-1.5 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none w-24 text-sm" />
-              <span class="text-[#75715E] text-xs">字节从 0 开始计数</span>
+                class="bg-monokai-input px-3 py-1.5 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none w-24 text-sm" />
+              <span class="text-monokai-comment text-xs">字节从 0 开始计数</span>
             </div>
-            <div class="bg-[#272822] mt-2 p-2 border border-[#75715E]/30 rounded">
+            <div class="bg-monokai-bg mt-2 p-2 border border-monokai-comment/30 rounded">
               <div class="flex items-center gap-3 mb-2"><label
                   class="flex items-center gap-1 text-sm cursor-pointer"><input type="checkbox"
-                    v-model="field.enableParse" class="w-3.5 h-3.5" /><span class="text-[#75715E]">启用数值解析</span></label>
+                    v-model="field.enableParse" class="w-3.5 h-3.5" /><span class="text-monokai-comment">启用数值解析</span></label>
               </div>
               <div v-if="field.enableParse" class="gap-3 grid grid-cols-2 text-sm">
-                <div><label class="block mb-1 text-[#75715E]">数值类型</label><select v-model="field.parseType"
+                <div><label class="block mb-1 text-monokai-comment">数值类型</label><select v-model="field.parseType"
                     class="custom-select">
                     <option value="uint16">无符号整型16位</option>
                     <option value="int16">有符号整型16位</option>
@@ -83,69 +83,69 @@
                     <option value="int32">有符号整型32位</option>
                     <option value="float32">单精度浮点数32位</option>
                   </select></div>
-                <div><label class="block mb-1 text-[#75715E]">字节序</label><select v-model="field.endian"
+                <div><label class="block mb-1 text-monokai-comment">字节序</label><select v-model="field.endian"
                     class="custom-select">
                     <option value="big">大端 (Big-Endian)</option>
                     <option value="little">小端 (Little-Endian)</option>
                   </select></div>
               </div>
-              <div v-if="field.enableParse" class="mt-2 pt-2 border-[#75715E]/30 border-t text-sm">
-                <div class="flex justify-between items-center"><span class="text-[#75715E]">原始数据：</span><span
-                    class="font-mono text-[#E6DB74]">{{ getRawHex(field) }}</span></div>
-                <div class="flex justify-between items-center mt-1"><span class="text-[#75715E]">解析值：</span><span
+              <div v-if="field.enableParse" class="mt-2 pt-2 border-monokai-comment/30 border-t text-sm">
+                <div class="flex justify-between items-center"><span class="text-monokai-comment">原始数据：</span><span
+                    class="font-mono text-monokai-yellow">{{ getRawHex(field) }}</span></div>
+                <div class="flex justify-between items-center mt-1"><span class="text-monokai-comment">解析值：</span><span
                     :class="getParseStatus(field).class" class="font-bold">{{ getParseStatus(field).text }}</span></div>
-                <div v-if="getParseWarning(field)" class="mt-1 text-[#F92672] text-xs">⚠️ {{ getParseWarning(field) }}
+                <div v-if="getParseWarning(field)" class="mt-1 text-monokai-pink text-xs">⚠️ {{ getParseWarning(field) }}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="fieldList.length === 0" class="py-10 text-[#75715E] text-center">暂无分区规则</div>
+      <div v-if="fieldList.length === 0" class="py-10 text-monokai-comment text-center">暂无分区规则</div>
     </div>
 
     <!-- 竖向布局（上下滚动） -->
     <div v-else class="flex-1 p-4 overflow-y-auto custom-scrollbar">
       <div class="gap-3 grid">
         <div v-for="(field, idx) in fieldList" :key="idx"
-          class="bg-[#3E3D32] p-3 border border-[#75715E]/40 rounded-xl">
-          <!-- 卡片内容与上面完全一致（复制粘贴） -->
+          class="bg-monokai-surface p-3 border border-monokai-comment/40 rounded-xl">
+          <!-- 卡片内容与上面完全一致 -->
           <div>
             <div class="flex justify-between items-center mb-3">
-              <span class="font-medium text-[#66D9EF] text-sm">分区 #{{ idx + 1 }}</span>
+              <span class="font-medium text-monokai-cyan text-sm">分区 #{{ idx + 1 }}</span>
               <div class="flex gap-2">
                 <button @click="moveUp(idx)" :disabled="idx === 0"
-                  class="flex justify-center items-center bg-[#32332E] hover:bg-[#4e4d40] disabled:opacity-40 rounded w-6 h-6 text-xs">↑</button>
+                  class="flex justify-center items-center bg-monokai-input hover:bg-monokai-inputHover disabled:opacity-40 rounded w-6 h-6 text-xs">↑</button>
                 <button @click="moveDown(idx)" :disabled="idx === fieldList.length - 1"
-                  class="flex justify-center items-center bg-[#32332E] hover:bg-[#4e4d40] disabled:opacity-40 rounded w-6 h-6 text-xs">↓</button>
+                  class="flex justify-center items-center bg-monokai-input hover:bg-monokai-inputHover disabled:opacity-40 rounded w-6 h-6 text-xs">↓</button>
                 <button @click="delField(idx)"
-                  class="flex justify-center items-center bg-[#F92672]/20 hover:bg-[#F92672]/40 rounded w-6 h-6 text-[#F92672] text-xs">×</button>
+                  class="flex justify-center items-center bg-monokai-pink/20 hover:bg-monokai-pink/40 rounded w-6 h-6 text-monokai-pink text-xs">×</button>
               </div>
             </div>
             <div class="flex items-center gap-3 mb-3">
-              <label class="w-20 text-[#75715E] text-sm">分区名称</label>
+              <label class="w-20 text-monokai-comment text-sm">分区名称</label>
               <input v-model="field.name" placeholder="例：设备地址、功能码、数据、CRC校验"
-                class="flex-1 bg-[#32332E] px-3 py-1.5 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none text-sm" />
-              <label class="text-[#75715E] text-sm">标记色</label>
+                class="flex-1 bg-monokai-input px-3 py-1.5 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none text-sm" />
+              <label class="text-monokai-comment text-sm">标记色</label>
               <input v-model="field.color" type="color"
                 class="bg-transparent p-0 border-0 rounded w-8 h-8 cursor-pointer" />
             </div>
             <div class="flex items-center gap-3 mb-3">
-              <label class="w-20 text-[#75715E] text-sm">起始偏移(字节)</label>
+              <label class="w-20 text-monokai-comment text-sm">起始偏移(字节)</label>
               <input v-model.number="field.start" type="number" min="0"
-                class="bg-[#32332E] px-3 py-1.5 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none w-24 text-sm" />
-              <label class="text-[#75715E] text-sm">截取长度(字节)</label>
+                class="bg-monokai-input px-3 py-1.5 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none w-24 text-sm" />
+              <label class="text-monokai-comment text-sm">截取长度(字节)</label>
               <input v-model.number="field.len" type="number" min="1"
-                class="bg-[#32332E] px-3 py-1.5 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none w-24 text-sm" />
-              <span class="text-[#75715E] text-xs">字节从 0 开始计数</span>
+                class="bg-monokai-input px-3 py-1.5 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none w-24 text-sm" />
+              <span class="text-monokai-comment text-xs">字节从 0 开始计数</span>
             </div>
-            <div class="bg-[#272822] mt-2 p-2 border border-[#75715E]/30 rounded">
+            <div class="bg-monokai-bg mt-2 p-2 border border-monokai-comment/30 rounded">
               <div class="flex items-center gap-3 mb-2"><label
                   class="flex items-center gap-1 text-sm cursor-pointer"><input type="checkbox"
-                    v-model="field.enableParse" class="w-3.5 h-3.5" /><span class="text-[#75715E]">启用数值解析</span></label>
+                    v-model="field.enableParse" class="w-3.5 h-3.5" /><span class="text-monokai-comment">启用数值解析</span></label>
               </div>
               <div v-if="field.enableParse" class="gap-3 grid grid-cols-2 text-sm">
-                <div><label class="block mb-1 text-[#75715E]">数值类型</label><select v-model="field.parseType"
+                <div><label class="block mb-1 text-monokai-comment">数值类型</label><select v-model="field.parseType"
                     class="custom-select">
                     <option value="uint16">无符号整型16位</option>
                     <option value="int16">有符号整型16位</option>
@@ -153,25 +153,25 @@
                     <option value="int32">有符号整型32位</option>
                     <option value="float32">单精度浮点数32位</option>
                   </select></div>
-                <div><label class="block mb-1 text-[#75715E]">字节序</label><select v-model="field.endian"
+                <div><label class="block mb-1 text-monokai-comment">字节序</label><select v-model="field.endian"
                     class="custom-select">
                     <option value="big">大端 (Big-Endian)</option>
                     <option value="little">小端 (Little-Endian)</option>
                   </select></div>
               </div>
-              <div v-if="field.enableParse" class="mt-2 pt-2 border-[#75715E]/30 border-t text-sm">
-                <div class="flex justify-between items-center"><span class="text-[#75715E]">原始数据：</span><span
-                    class="font-mono text-[#E6DB74]">{{ getRawHex(field) }}</span></div>
-                <div class="flex justify-between items-center mt-1"><span class="text-[#75715E]">解析值：</span><span
+              <div v-if="field.enableParse" class="mt-2 pt-2 border-monokai-comment/30 border-t text-sm">
+                <div class="flex justify-between items-center"><span class="text-monokai-comment">原始数据：</span><span
+                    class="font-mono text-monokai-yellow">{{ getRawHex(field) }}</span></div>
+                <div class="flex justify-between items-center mt-1"><span class="text-monokai-comment">解析值：</span><span
                     :class="getParseStatus(field).class" class="font-bold">{{ getParseStatus(field).text }}</span></div>
-                <div v-if="getParseWarning(field)" class="mt-1 text-[#F92672] text-xs">⚠️ {{ getParseWarning(field) }}
+                <div v-if="getParseWarning(field)" class="mt-1 text-monokai-pink text-xs">⚠️ {{ getParseWarning(field) }}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div v-if="fieldList.length === 0" class="py-10 text-[#75715E] text-center">暂无分区规则</div>
+      <div v-if="fieldList.length === 0" class="py-10 text-monokai-comment text-center">暂无分区规则</div>
     </div>
   </div>
 </template>

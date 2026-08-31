@@ -4,24 +4,24 @@
     <div class="flex md:flex-row flex-col flex-1 overflow-hidden">
       <!-- 左侧配置面板（保持不变） -->
       <div
-        class="p-4 border-[#3E3D32] md:border-r border-b md:border-b-0 w-full md:w-72 lg:w-80 overflow-y-auto transition-all duration-200 shrink-0 custom-scrollbar"
+        class="p-4 border-monokai-surface md:border-r border-b md:border-b-0 w-full md:w-72 lg:w-80 overflow-y-auto transition-all duration-200 shrink-0 custom-scrollbar"
         :class="{ 'md:hidden': sidebarCollapsed }">
         <!-- 串口参数 -->
-        <div class="bg-[#3E3D32] mb-4 p-4 rounded-xl">
-          <h3 class="mb-3 font-medium text-[#66D9EF] text-sm">串口参数</h3>
+        <div class="bg-monokai-surface mb-4 p-4 rounded-xl">
+          <h3 class="mb-3 font-medium text-monokai-cyan text-sm">串口参数</h3>
           <div class="space-y-3">
             <div class="flex items-center gap-2">
-              <span class="w-16 text-[#A6E22E] text-sm shrink-0">端口名</span>
+              <span class="w-16 text-monokai-green text-sm shrink-0">端口名</span>
               <select v-model="store.portName"
-                class="flex-1 bg-[#32332E] px-3 py-2 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none text-[#F8F8F2] text-sm">
+                class="flex-1 bg-monokai-surface px-3 py-2 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none text-monokai-foreground text-sm">
                 <option v-for="p in store.ports" :key="p.name" :value="p.name">{{ p.name }}</option>
                 <option v-if="store.ports.length === 0" value="COM5">COM5</option>
               </select>
             </div>
             <div class="flex items-center gap-2">
-              <span class="w-16 text-[#A6E22E] text-sm shrink-0">波特率</span>
+              <span class="w-16 text-monokai-green text-sm shrink-0">波特率</span>
               <select v-model="store.baudRate"
-                class="flex-1 bg-[#32332E] px-3 py-2 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none text-[#F8F8F2] text-sm">
+                class="flex-1 bg-monokai-surface px-3 py-2 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none text-monokai-foreground text-sm">
                 <option :value="1200">1200</option>
                 <option :value="2400">2400</option>
                 <option :value="4800">4800</option>
@@ -36,9 +36,9 @@
               </select>
             </div>
             <div class="flex items-center gap-2">
-              <span class="w-16 text-[#A6E22E] text-sm shrink-0">数据位</span>
+              <span class="w-16 text-monokai-green text-sm shrink-0">数据位</span>
               <select v-model="store.dataBits"
-                class="flex-1 bg-[#32332E] px-3 py-2 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none text-[#F8F8F2] text-sm">
+                class="flex-1 bg-monokai-surface px-3 py-2 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none text-monokai-foreground text-sm">
                 <option :value="5">5</option>
                 <option :value="6">6</option>
                 <option :value="7">7</option>
@@ -46,9 +46,9 @@
               </select>
             </div>
             <div class="flex items-center gap-2">
-              <span class="w-16 text-[#A6E22E] text-sm shrink-0">校验位</span>
+              <span class="w-16 text-monokai-green text-sm shrink-0">校验位</span>
               <select v-model="store.parity"
-                class="flex-1 bg-[#32332E] px-3 py-2 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none text-[#F8F8F2] text-sm">
+                class="flex-1 bg-monokai-surface px-3 py-2 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none text-monokai-foreground text-sm">
                 <option>无</option>
                 <option>奇</option>
                 <option>偶</option>
@@ -57,9 +57,9 @@
               </select>
             </div>
             <div class="flex items-center gap-2">
-              <span class="w-16 text-[#A6E22E] text-sm shrink-0">停止位</span>
+              <span class="w-16 text-monokai-green text-sm shrink-0">停止位</span>
               <select v-model="store.stopBits"
-                class="flex-1 bg-[#32332E] px-3 py-2 border border-[#75715E] focus:border-[#66D9EF] rounded-lg focus:outline-none text-[#F8F8F2] text-sm">
+                class="flex-1 bg-monokai-surface px-3 py-2 border border-monokai-comment focus:border-monokai-cyan rounded-lg focus:outline-none text-monokai-foreground text-sm">
                 <option :value="1">1</option>
                 <option :value="2">2</option>
               </select>
@@ -68,62 +68,58 @@
         </div>
 
         <!-- 串口操作按钮 -->
-        <div class="bg-[#3E3D32] mb-4 p-4 rounded-xl">
+        <div class="bg-monokai-surface mb-4 p-4 rounded-xl">
           <div class="flex gap-3">
             <button @click="handleOpen" :disabled="store.isOpen"
-              class="flex-1 bg-[#A6E22E] hover:bg-[#93c725] disabled:opacity-40 py-2 rounded-lg font-medium text-[#272822] text-sm transition">
+              class="flex-1 bg-monokai-green hover:bg-monokai-greenHover disabled:opacity-40 py-2 rounded-lg font-medium text-monokai-foreground text-sm transition">
               打开串口
             </button>
             <button @click="handleClose" :disabled="!store.isOpen"
-              class="flex-1 bg-[#F92672] hover:bg-[#dd1e63] disabled:opacity-40 py-2 rounded-lg font-medium text-white text-sm transition">
+              class="flex-1 bg-monokai-pink hover:bg-monokai-pinkHover disabled:opacity-40 py-2 rounded-lg font-medium text-white text-sm transition">
               关闭串口
             </button>
           </div>
-          <div v-if="errorMsg" class="mt-2 text-[#F92672] text-xs text-center">
+          <div v-if="errorMsg" class="mt-2 text-monokai-pink text-xs text-center">
             {{ errorMsg }}
           </div>
         </div>
 
         <!-- 接收设置 -->
-        <div class="bg-[#3E3D32] mb-4 p-4 rounded-xl">
-          <h3 class="mb-3 font-medium text-[#66D9EF] text-sm">接收设置</h3>
+        <div class="bg-monokai-surface mb-4 p-4 rounded-xl">
+          <h3 class="mb-3 font-medium text-monokai-cyan text-sm">接收设置</h3>
           <div class="space-y-2">
-            <label class="flex items-center gap-2 text-[#F8F8F2] text-sm">
+            <label class="flex items-center gap-2 text-monokai-foreground text-sm">
               <input type="checkbox" v-model="store.autoSplit" @change="store.updateAutoSplit()"
-                class="accent-[#F92672]" />
+                class="accent-monokai-pink" />
               自动断帧
               <input
-                class="bg-[#32332E] px-2 py-0.5 border border-[#75715E] rounded w-14 text-[#E6DB74] text-sm text-center"
+                class="bg-monokai-surface px-2 py-0.5 border border-monokai-comment focus:border-monokai-cyan rounded w-14 text-monokai-yellow text-sm text-center"
                 v-model="store.splitMs" @change="store.updateAutoSplit()" />
-              <span class="text-[#75715E]">ms</span>
+              <span class="text-monokai-comment">ms</span>
             </label>
-            <label class="flex items-center gap-2 text-[#F8F8F2] text-sm">
-              <input type="checkbox" v-model="store.saveToFile" class="accent-[#F92672]" />
-              将接收保存到文件
-            </label>
-          </div>
+          </div>  
           <div class="flex gap-3 mt-3">
             <button
-              class="flex-1 bg-[#32332E] hover:bg-[#4e4d40] py-2 border border-[#75715E] rounded-lg text-[#E6DB74] text-sm">
+              class="flex-1 bg-monokai-surface hover:bg-monokai-surfaceHover py-2 border border-monokai-comment rounded-lg text-monokai-yellow text-sm">
               保存数据
             </button>
             <button @click="handleClear"
-              class="flex-1 bg-[#32332E] hover:bg-[#4e4d40] py-2 border border-[#75715E] rounded-lg text-[#E6DB74] text-sm">
+              class="flex-1 bg-monokai-surface hover:bg-monokai-surfaceHover py-2 border border-monokai-comment rounded-lg text-monokai-yellow text-sm">
               清空数据
             </button>
           </div>
         </div>
 
         <!-- 发送设置 -->
-        <div class="bg-[#3E3D32] p-4 rounded-xl">
-          <h3 class="mb-3 font-medium text-[#66D9EF] text-sm">发送设置</h3>
-          <label class="flex items-center gap-2 text-[#F8F8F2] text-sm">
-            <input type="checkbox" v-model="store.autoSend" @change="handleAutoSendToggle" class="accent-[#F92672]" />
+        <div class="bg-monokai-surface p-4 rounded-xl">
+          <h3 class="mb-3 font-medium text-monokai-cyan text-sm">发送设置</h3>
+          <label class="flex items-center gap-2 text-monokai-foreground text-sm">
+            <input type="checkbox" v-model="store.autoSend" @change="handleAutoSendToggle" class="accent-monokai-pink" />
             定时发送
             <input
-              class="bg-[#32332E] px-2 py-0.5 border border-[#75715E] rounded w-14 text-[#E6DB74] text-sm text-center"
+              class="bg-monokai-surface px-2 py-0.5 border border-monokai-comment focus:border-monokai-cyan rounded w-14 text-monokai-yellow text-sm text-center"
               v-model.number="store.sendSec" />
-            <span class="text-[#75715E]">秒</span>
+            <span class="text-monokai-comment">秒</span>
           </label>
         </div>
       </div>
@@ -133,67 +129,67 @@
         <!-- 顶部栏 -->
         <div class="flex justify-between items-center px-4 py-2">
           <button @click="sidebarCollapsed = !sidebarCollapsed"
-            class="md:hidden bg-[#3E3D32] hover:bg-[#4e4d40] px-2 py-1 border border-[#75715E] rounded text-[#A6E22E] text-xs">
+            class="md:hidden bg-monokai-surface hover:bg-monokai-surfaceHover px-2 py-1 border border-monokai-comment rounded text-monokai-green text-xs">
             {{ sidebarCollapsed ? '展开设置' : '收起设置' }}
           </button>
-          <span class="ml-auto text-[#75715E] text-sm">数据帧记录</span>
+          <span class="ml-auto text-monokai-comment text-sm">数据帧记录</span>
         </div>
 
         <!-- 消息列表容器 -->
-        <div class="flex flex-col flex-1 border border-[#3E3D32] rounded-xl min-h-0">
+        <div class="flex flex-col flex-1 border border-monokai-comment rounded-xl min-h-0">
           <div ref="msgListRef" class="flex-1 space-y-3 px-4 py-2 min-h-0 overflow-y-auto custom-scrollbar">
             <div v-for="(msg, idx) in store.messages" :key="idx" class="flex flex-col"
               :class="msg.type === 'sent' ? 'items-end' : 'items-start'">
               <!-- 气泡 -->
               <div class="flex flex-col max-w-[85%]"
-                :class="msg.type === 'recv' ? 'bg-[#3E3D32] border-[#75715E]/40' : 'bg-[#A6E22E]/15 border-[#A6E22E]/30'"
+                :class="msg.type === 'recv' ? 'bg-monokai-surface border-monokai-comment/40' : 'bg-monokai-surface/15 border-monokai-cyan/30'"
                 style="border-width: 1px; border-radius: 1rem; border-top-left-radius: 0.25rem; border-top-right-radius: 0.25rem;">
                 <!-- 消息内容 -->
                 <div class="px-4 py-3">
                   <div class="font-mono text-sm break-all whitespace-pre-wrap"
-                    :class="msg.type === 'recv' ? 'text-[#E6DB74]' : 'text-[#F8F8F2]'">
+                    :class="msg.type === 'recv' ? 'text-monokai-yellow' : 'text-monokai-foreground'">
                     {{ msg.text }}
                   </div>
                   <div class="mt-1 text-[10px] text-right"
-                    :class="msg.type === 'recv' ? 'text-[#75715E]' : 'text-[#A6E22E]/60'">
+                    :class="msg.type === 'recv' ? 'text-monokai-comment' : 'text-monokai-green/60'">
                     {{ msg.time }}
                   </div>
                 </div>
                 <!-- 协议选择器 + 解析结果 -->
                 <div class="flex flex-col gap-2 px-4 pt-0 pb-3">
                   <div class="flex items-center gap-2">
-                    <span class="text-[#75715E] text-[10px]">协议解析:</span>
+                    <span class="text-monokai-comment text-[10px]">协议解析:</span>
                     <select v-model="msg.protocol" @change="(e) => onProtocolChange(msg, e.target.value)"
-                      class="bg-[#32332E] px-2 py-0.5 border border-[#75715E] rounded focus:outline-none text-[#F8F8F2] text-xs">
+                      class="bg-monokai-surface px-2 py-0.5 border border-monokai-comment rounded focus:outline-none text-monokai-foreground text-xs">
                       <option :value="null">无</option>
                       <option value="modbus">Modbus RTU</option>
                       <option value="iec104">IEC104</option>
                     </select>
                   </div>
                   <div v-if="msg.protocol && msg.parsedResult"
-                    class="bg-[#272822] p-2 border border-[#75715E]/30 rounded font-mono text-xs">
-                    <pre class="text-[#E6DB74] break-all whitespace-pre-wrap">{{ msg.parsedResult }}</pre>
+                    class="bg-monokai-surface p-2 border border-monokai-comment/30 rounded font-mono text-xs">
+                    <pre class="text-monokai-yellow break-all whitespace-pre-wrap">{{ msg.parsedResult }}</pre>
                   </div>
                 </div>
               </div>
             </div>
             <div v-if="store.messages.length === 0"
-              class="flex justify-center items-center h-full text-[#75715E] text-sm">
+              class="flex justify-center items-center h-full text-monokai-comment text-sm">
               暂无数据，请打开串口后收发数据
             </div>
           </div>
 
           <!-- 接收格式栏 -->
-          <div class="flex flex-wrap items-center gap-3 bg-[#3E3D32] px-4 py-1 border-[#75715E] border-t rounded-b-xl">
-            <span class="text-[#75715E] text-sm">显示格式:</span>
+          <div class="flex flex-wrap items-center gap-3 bg-monokai-surface px-4 py-1 border border-monokai-comment border-t rounded-b-xl">
+            <span class="text-monokai-comment text-sm">显示格式:</span>
             <span v-for="item in recvModeList" :key="item.key" @click="store.setRecvMode(item.key)"
               class="px-2 py-1 rounded text-sm transition cursor-pointer" :class="store.recvMode === item.key
-                ? 'bg-[#A6E22E] text-[#272822]'
-                : 'text-[#F8F8F2] hover:bg-[#4e4d40]'
+                ? 'bg-monokai-green text-monokai-foreground]'
+                : 'text-monokai-foreground] hover:bg-monokai-surface/30'
                 ">
               {{ item.name }}
             </span>
-            <span class="ml-auto text-[#75715E] text-xs">
+            <span class="ml-auto text-monokai-comment text-xs">
               {{ store.messages.length }} 帧
             </span>
           </div>
@@ -202,23 +198,23 @@
         <div class="h-3 shrink-0"></div>
 
         <!-- 发送区域 -->
-        <div class="bg-[#272822] border border-[#3E3D32] rounded-xl overflow-hidden shrink-0">
+        <div class="bg-monokai-surface border border-monokai-comment rounded-xl overflow-hidden shrink-0">
           <div class="flex gap-3 p-2">
             <textarea v-model="sendData"
-              class="flex-1 bg-[#32332E] px-4 py-1 border border-[#75715E] focus:border-[#66D9EF] rounded-xl focus:outline-none font-mono text-[#E6DB74] text-sm resize-none custom-scrollbar"
+              class="flex-1 bg-monokai-surface px-4 py-1 border border-monokai-comment focus:border-monokai-cyan rounded-xl focus:outline-none font-mono text-monokai-yellow text-sm resize-none custom-scrollbar"
               :rows="sendRows" placeholder="输入要发送的数据..." @keydown.enter.ctrl="handleSend"
               @keydown.enter.exact="handleSend"></textarea>
             <button @click="handleSend" :disabled="!store.isOpen || !sendData.trim()"
-              class="self-stretch bg-[#F92672] hover:bg-[#dd1e63] disabled:opacity-40 px-6 rounded-xl font-medium text-white text-sm transition shrink-0">
+              class="self-stretch bg-monokai-red hover:bg-monokai-pink disabled:opacity-40 px-6 rounded-xl font-medium text-white text-sm transition shrink-0">
               发送
             </button>
           </div>
-          <div class="flex flex-wrap items-center gap-3 bg-[#3E3D32] px-4 py-1 border-[#75715E] border-t">
-            <span class="text-[#75715E] text-sm">发送格式:</span>
+          <div class="flex flex-wrap items-center gap-3 bg-monokai-surface px-4 py-1 border border-monokai-comment border-t">
+            <span class="text-monokai-comment text-sm">发送格式:</span>
             <span v-for="item in sendModeList" :key="item.key" @click="store.setSendMode(item.key)"
               class="px-2 py-1 rounded text-sm transition cursor-pointer" :class="store.sendMode === item.key
-                ? 'bg-[#A6E22E] text-[#272822]'
-                : 'text-[#F8F8F2] hover:bg-[#4e4d40]'
+                ? 'bg-monokai-green text-monokai-foreground]'
+                : 'text-monokai-foreground] hover:bg-monokai-surface/30'
                 ">
               {{ item.name }}
             </span>
