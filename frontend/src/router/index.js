@@ -7,6 +7,8 @@ import ModbusParser from '../views/FrameParser/ModbusParser.vue'
 import IEC104Parser from '../views/FrameParser/IEC104Parser.vue'
 import DLT698Parser from '../views/FrameParser/DLT698Parser.vue'
 import DLT645Parser from '../views/FrameParser/DLT645Parser.vue'
+import MQTT from '../views/MQTT.vue'
+import Card from '../views/Card.vue'
 
 const routes = [
   {
@@ -28,6 +30,8 @@ const routes = [
     redirect: '/dashboard/serial',
     children: [
       { path: 'serial', component: SerialPort },
+      { path: 'mqtt', component: MQTT },
+      { path: 'card', component: Card },
       { path: 'modbus-parser', component: ModbusParser },
       { path: 'iec104-parser', component: IEC104Parser },
       { path: 'dlt698-parser', component: DLT698Parser },
