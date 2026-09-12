@@ -40,8 +40,17 @@
             'flex items-center py-3 rounded-lg text-mk-foreground whitespace-nowrap transition',
             sidebarFold ? 'justify-center gap-0 px-0' : 'gap-3 px-4'
           ]">
-            <CpuChipIcon class="w-5 h-5 shrink-0" />
+            <SignalIcon class="w-5 h-5 shrink-0" />
             <span v-show="!sidebarFold" class="font-bold">MQTT</span>
+          </router-link>
+
+          <!-- TCP/UDP（一级菜单） -->
+          <router-link to="/dashboard/tcpudp" active-class="bg-mk-green text-[#272822]" :class="[
+            'flex items-center py-3 rounded-lg text-mk-foreground whitespace-nowrap transition',
+            sidebarFold ? 'justify-center gap-0 px-0' : 'gap-3 px-4'
+          ]">
+            <ServerStackIcon class="w-5 h-5 shrink-0" />
+            <span v-show="!sidebarFold" class="font-bold">TCP/UDP</span>
           </router-link>
 
           <!-- 协议解析（二级菜单父级） -->
@@ -122,10 +131,16 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import {
   CpuChipIcon,
-  InboxArrowDownIcon,
+  SignalIcon,
+  ServerStackIcon,
   RectangleGroupIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  ArrowDownOnSquareIcon,
+  DocumentArrowDownIcon,
+  Bars3CenterLeftIcon,
+  ViewColumnsIcon,
+  IdentificationIcon,
 } from '@heroicons/vue/24/outline'
 import { useSerialStore } from '../stores/serial.js'
 

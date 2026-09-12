@@ -7,7 +7,7 @@ export const useSerialStore = defineStore('serial', () => {
   // ---------- State ----------
   const isOpen = ref(false)
   const portName = ref('COM5')
-  const baudRate = ref(115200)
+  const baudRate = ref(9600)
   const dataBits = ref(8)
   const parity = ref('无')
   const stopBits = ref(1)
